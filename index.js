@@ -73,8 +73,40 @@ moviedb.get('/search', (req, res) => {
 moviedb.get('/movies/create', (req, res) => {
   res.send({ status: 200, message: '' });
 });
-moviedb.get('/movies/read', (req, res) => {
-  res.send({ status: 200, data: movies });
+
+const movieList = (res, ordered) => {
+  databaseConnection
+    .collection('movies')
+    .find({})
+    .toArray((err, result) => {
+      if (err) res.send({ status: 500, message: err });
+      else {
+        if (ordered === 'byDate')
+          result = result.sort((a, b) => a.year - b.year);
+        else if (ordered === 'byRating')
+          result = result.sort((a, b) => a.rating - b.rating);
+        else if (ordered === 'byTitle')
+          result = result.sort((a, b) => a.title.localeCompare(b.title));
+      }
+    });
+};
+
+app.get('/movies/read', (req, res) => {
+  res.send({ status: 200, message: movies });
+});
+
+app.get('/movies/read/by-date', (req, res) => {
+  movieList(res, 'byDate');
+});
+
+app.get('/movies/read/by-rating', (req, res) => {
+
+  movieList(res, 'byRating');
+});
+
+app.get('/movies/read/by-title', (req, res) => {
+
+  movieList(res, 'byTitle');
 });
 moviedb.get('/movies/update', (req, res) => {
   res.send({ status: 200, message: '' });
