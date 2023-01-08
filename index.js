@@ -2,6 +2,13 @@ const { application } = require('express')
 const express = require('express')
 const moviedb = express()
 
+const movies = [
+  { id: 1, title: 'Jaws', year: 1975, rating: 8 },
+  { id: 2, title: 'Avatar', year: 2009, rating: 7.8 },
+  { id: 3, title: 'Brazil', year: 1985, rating: 8 },
+  { id: 4, title: 'الإرهاب والكباب', year: 1992, rating: 6.2 },
+];
+
 moviedb.get('/', (req, res) => {
   res.send(`
 <h1> welcome to our  homepage!</h1>
@@ -62,4 +69,16 @@ moviedb.get('/search', (req, res) => {
     ? res.send({ status: 200, message: 'ok', data: req.query.s })
     : res.send({ status: 500, error: true, message: 'you have to provide a search',
       });
+});
+moviedb.get('/movies/create', (req, res) => {
+  res.send({ status: 200, message: '' });
+});
+moviedb.get('/movies/read', (req, res) => {
+  res.send({ status: 200, data: movies });
+});
+moviedb.get('/movies/update', (req, res) => {
+  res.send({ status: 200, message: '' });
+});
+moviedb.get('/movies/delete', (req, res) => {
+  res.send({ status: 200, message: '' });
 });
