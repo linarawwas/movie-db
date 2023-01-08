@@ -6,9 +6,16 @@ moviedb.get('/', (req, res) => {
 <h1> welcome to our awesome homepage!</h1>
   <h2> enter url: <h2>
   <form action="/result" method="POST">
-  <input type="text" name="color">
-  <button> submit </button>
-  </form>
+  <input type="text" name="URL">
+</form>
+<h2> Want to view some details? <h2>
+<form action="/test" method="POST">
+  <button> TEST </button>
+</form>
+<h2> WHAT TIME IS IT? <h2>
+<form action="/time" method="POST">
+  <button> GET TIME </button>
+</form>
   `)})
 
 
@@ -17,5 +24,27 @@ moviedb.post('/result',(req,res)=> {
   res.send(`
   <h1> welcome to our awesome homepage!</h1>
     <h2> Okaayyyy! <h2>
+    `)
+})
+moviedb.post('/test',(req,res)=> {
+  res.send(`
+  <h1> welcome to our awesome homepage!</h1>
+<h2>   {status:200, message:"ok"}</h2>
+    `)
+})
+moviedb.post('/time',(req,res)=> {
+  res.send(`
+  <h1> welcome to our awesome homepage!</h1>
+  <h2>{status:200, message:<nav id="time">get time</nav>}</h2>
+  
+<script>
+
+function showTime() {
+  document.getElementById("time").style.display = "inline-block";
+
+  document.getElementById("time").innerHTML = Date().slice(16,23);
+}
+document.getElementById("time").addEventListener("click", showTime() );
+ </script>
     `)
 })
