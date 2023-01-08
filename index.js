@@ -87,12 +87,13 @@ const movieList = (res, ordered) => {
           result = result.sort((a, b) => a.rating - b.rating);
         else if (ordered === 'byTitle')
           result = result.sort((a, b) => a.title.localeCompare(b.title));
+        res.send({ status: 200, message: result });
       }
     });
 };
 
 app.get('/movies/read', (req, res) => {
-  res.send({ status: 200, message: movies });
+  movieList(res);
 });
 
 app.get('/movies/read/by-date', (req, res) => {
@@ -107,6 +108,25 @@ app.get('/movies/read/by-rating', (req, res) => {
 app.get('/movies/read/by-title', (req, res) => {
 
   movieList(res, 'byTitle');
+});
+
+app.get('/movies/read/id/:ID', (req, res) => {
+  let resObj;
+  databaseConnection
+    .collection('movies')
+    .find({ _id: ObjectId(req.params.ID) })
+    .toArray((err, result) => {
+      resObj = result;
+      res.send(
+        resObj.length
+          ? resObj
+          : {
+              status: 404,
+              error: true,
+              message: 'the movie <ID> does not exist',
+            }
+      );
+    });
 });
 moviedb.get('/movies/update', (req, res) => {
   res.send({ status: 200, message: '' });
